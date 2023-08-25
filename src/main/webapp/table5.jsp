@@ -28,12 +28,17 @@
 							td.style.visibility = 'visible';
 						else
 							td.style.visibility = 'hidden';	
+						         // 해당 태그 및 아이디의 스타일 속성을 변경하는 문법
 					}, Math.random()*500)
 					
 				}
 			}
 		}
 	});
+</script>
+
+<script type="text/javascript">
+
 </script>
 </head>
 <body>
