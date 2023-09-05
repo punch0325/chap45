@@ -1,5 +1,7 @@
 package util;
 
+import lombok.Getter;
+
 public enum Color {
 	Black,
 	Red,

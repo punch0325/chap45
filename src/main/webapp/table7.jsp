@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>table6.jsp</title>
+<%-- select를 이용하여 선택된 알파벳이 블링크 되도록 구현 --%>
+<title>table7.jsp</title>
 <style type="text/css">
 	table{
 		border-collapse: collapse;
@@ -13,11 +14,16 @@
 </style>
 
 <script type="text/javascript">
-//자바 스크립트는 변수와 메소드 선언 시 타입이나 void도 필요없다.
-
-/*객체지향 프로그래밍을 위한 Blink 클래스 선언*/
+/*Blink 클래스 선언*/
 class Blink{
-	tid =[]; // 필드 변수
+	tid =[]; 
+	alpha;
+	
+	constructor(){
+		let select = document.querySelector('select');
+		this.alpha = select.options[select.selectedIndex].value
+		console.log("생성자 호출!"+this.alpha);
+	}
 	
 	/*블링크 실행 메소드 run()선언*/
 	run(){
@@ -26,7 +32,7 @@ class Blink{
 		for(let i = 0; i<20; i++){
 			for(let j=0; j<40; j++){
 				let td = table.rows[i].cells[j];
-				if(td.innerHTML == 'A'){
+				if(td.innerHTML == this.alpha){
 					let id = setInterval(function() {
 						if(td.style.visibility=='hidden')
 							td.style.visibility = 'visible';
@@ -34,7 +40,7 @@ class Blink{
 							td.style.visibility = 'hidden';	
 
 					}, Math.random()*500+10);
-					this.tid.push(id); // 자바스크립트에서 필드를 참조하기 위해선 this가 필수이다.
+					this.tid.push(id);
 				}
 			}
 		}
@@ -48,7 +54,7 @@ class Blink{
 		
 		for(let id of this.tid)
 			clearInterval(id);
-			// clrarInterval : setInterval을 중지함 그래서 setInterval의 코드를 변수로 받은 것
+		
 		console.log("clear()...")
 	}
 }
@@ -59,24 +65,24 @@ class Blink{
 	window.onload=function(){
 		let start = document.querySelectorAll('button')[0]
 		let stop = document.querySelectorAll('button')[1]
-																	// 버튼이 2개임으로 인덱스 값을 참조로 해당 버튼 데이터를 가져옴
+		let h2 = document.querySelector('h2');
 		
-		start.disabled=false;
 		stop.disabled=true;
-				// disabled : true면 사용자가 클릭할 수 없게 함 
 		
 		let blink;
 		
 		
 		start.onclick = function(){
+			blink = new Blink();
+
 			start.disabled=true;
 			stop.disabled=false;
-			
-			blink = new Blink();
+
 			blink.run();
+
+			h2.innerText=blink.alpha+"선택";
+			
 	
-			// 버튼을 눌렀을 때 잘 먹히나 콘솔에서 확인
-			console.log("start...")
 		}
 		
 		
@@ -86,11 +92,8 @@ class Blink{
 			
 			blink.clear();
 			
-			console.log("stop...")
 		}
-		
-		console.log(start);
-		console.log(stop);
+
 		
 	}
 
@@ -103,8 +106,23 @@ class Blink{
 <body>
 <h1>TABLE TAG 연습</h1>
 <button>START</button>
+
+<select>
+	<%
+		for(var i=0; i<26; i++){
+	%>
+	<option><%=(char)('A'+i)%></option>
+	<%
+		}
+	%>
+</select>
+
 <button>STOP</button>
+
+
 <hr>
+<h2></h2>
+
 
 <table >
 	<tbody>
